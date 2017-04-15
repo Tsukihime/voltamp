@@ -14,21 +14,23 @@ Uart uart;
 #endif
 
 ISR(USART_TXC_vect) {
-    uart.sendUartData();
+    uart.ISRTransmitCompleteRoutine();
 }
 
-void Uart::sendUartData() {
+void Uart::ISRTransmitCompleteRoutine() {
     if(currentChar >= sizeof(TUARTSTR)) {
         currentChar = 0;
         CLR_PORT_BIT(UCSRB, TXCIE); // Disable the USART Transmit Complete interrupt (USART_TXC)
         return;
     }
 
-    if(currentChar == 0) {
-        SET_PORT_BIT(UCSRB, TXCIE); // Enable the USART Transmit Complete interrupt (USART_TXC)
-    }
-
     UDR = uartData.chars[currentChar++];
+}
+
+void Uart::startDataTransmit() {
+    while(currentChar != 0);    // wait while last transmit completes
+    SET_PORT_BIT(UCSRB, TXCIE); // Enable the USART Transmit Complete interrupt (USART_TXC)
+    ISRTransmitCompleteRoutine();
 }
 
 void Uart::Initialize(void) {
@@ -118,5 +120,5 @@ void Uart::updateData(uint16_t millivolts, uint16_t milliamperes, int16_t degree
         uartData.data.temperature[--i] = '-';
     }
 
-    sendUartData();
+    startDataTransmit();
 }

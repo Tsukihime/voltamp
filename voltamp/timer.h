@@ -17,7 +17,7 @@ class Timer {
     
     private:
         void processTask(TimerTask *task);
-        void wait();
+        void waitNextTick();
 };
 
 extern Timer timer;

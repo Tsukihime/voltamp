@@ -3,10 +3,10 @@
 #include "timer.h"
 
 Timer timer;
-volatile uint8_t mainTimerFired;
+volatile bool mainTimerFired;
 
 ISR(TIMER2_COMP_vect) {
-    mainTimerFired = 1;
+    mainTimerFired = true;
 }
 
 void Timer::initialize() {
@@ -17,11 +17,11 @@ void Timer::initialize() {
     TIMSK |= (1 << OCIE2); // Timer/Counter2 Output Compare Match Interrupt Enable
 }
 
-void Timer::wait() {    
+void Timer::waitNextTick() {    
     while(!mainTimerFired) {
         // wait until timer fired
     }
-    mainTimerFired = 0; // reset fired flag
+    mainTimerFired = false; // reset fired flag
 }
 
 void Timer::processTask(TimerTask *task) {
@@ -42,7 +42,7 @@ TimerTask Timer::makeTask(uint16_t period_ms, TPROC callback) {
 
 void Timer::sync(TimerTask tasks[], uint8_t task_count) {
     uint8_t i;
-    wait();
+    waitNextTick();
     for(i = 0; i < task_count; i++){
         processTask(&tasks[i]);
     }

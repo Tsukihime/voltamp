@@ -1,7 +1,11 @@
 #ifndef UART_H
 #define UART_H
 
-class Uart {
+extern "C" void USART_TXC_vect(void) __attribute__((signal));
+
+class Uart {        
+    friend void USART_TXC_vect();
+
     private:    
         typedef union {
             struct {
@@ -19,12 +23,14 @@ class Uart {
         } TUARTSTR __attribute__ ((aligned (1)));
 
         TUARTSTR uartData;        
-        uint8_t currentChar;
-        
+        volatile uint8_t currentChar;
+
+        void startDataTransmit();
+        void ISRTransmitCompleteRoutine();
+
     public:
         void Initialize(void);
         void updateData(uint16_t millivolts, uint16_t milliamperes, int16_t degrees);
-        void sendUartData();
 };
 
 extern Uart uart;
