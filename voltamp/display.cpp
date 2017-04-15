@@ -68,7 +68,7 @@ int Display::isSameDisplays(TDisplay* first, TDisplay* second) {
     return (memcmp(first, second, sizeof(TDisplay)) == 0);
 }
 
-int Display::copyDisplays(TDisplay* dest, TDisplay* src) {
+void Display::copyDisplays(TDisplay* dest, TDisplay* src) {
     memcpy(dest, src, sizeof(TDisplay));
 }
 

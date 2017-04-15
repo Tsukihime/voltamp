@@ -6,7 +6,7 @@ extern "C" {
 #include "lib/1-wire-avr-lib/OWIHighLevelFunctions.h"
 #include "lib/1-wire-avr-lib/OWIBitFunctions.h"
 #include "lib/1-wire-avr-lib/common_files/OWIcrc.h"
-};
+}
 
 #define BUS OWI_PIN_5
 

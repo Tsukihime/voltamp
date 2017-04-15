@@ -14,7 +14,7 @@ class Uart {
                 char temperature[5];  // -10.1 02.3
                 char c;        // C
                 char nline;    // \n
-            };
+            } data;
             char chars[21];
         } TUARTSTR __attribute__ ((aligned (1)));
 

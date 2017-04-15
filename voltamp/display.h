@@ -32,7 +32,7 @@ class Display {
         void resetDisplay();
         void switchToNextDispay();
         int isSameDisplays(TDisplay* first, TDisplay* second);
-        int copyDisplays(TDisplay* dest, TDisplay* src);
+        void copyDisplays(TDisplay* dest, TDisplay* src);
 };
 
 extern Display display;

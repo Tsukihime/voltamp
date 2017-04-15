@@ -19,12 +19,14 @@ void Adc::initialize() {
 }
 
 // ADC Interrupt Is Used To Wake Up CPU From Sleep Mode
-EMPTY_INTERRUPT(ADC_vect);
+EMPTY_INTERRUPT(ADC_vect)
+
+#define ADCMUX_MASK 0x07
 
 // return 10 bit measure
 uint16_t Adc::getValue(uint8_t channel) {
-    channel &= 0b00000111;
-    ADMUX = (ADMUX & 0b11111000) | channel;
+    channel &= ADCMUX_MASK;
+    ADMUX = (ADMUX & ADCMUX_MASK) | channel;
     
     // Enter Sleep Mode To Trigger ADC Measurement
     set_sleep_mode(SLEEP_MODE_ADC);
