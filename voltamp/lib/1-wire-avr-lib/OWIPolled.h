@@ -112,7 +112,7 @@
  Timing parameters
 *****************************************************************************/
 
-#define     OWI_DELAY_OFFSET_CYCLES    13   //!< Timing delay when pulling bus low and releasing bus.
+#define     OWI_DELAY_OFFSET_CYCLES    0 //13   //!< Timing delay when pulling bus low and releasing bus.
 
 // Bit timing delays in clock cycles (= us*clock freq in MHz).
 #define     OWI_DELAY_A_STD_MODE    ((6   * CPU_FREQUENCY) - OWI_DELAY_OFFSET_CYCLES)
