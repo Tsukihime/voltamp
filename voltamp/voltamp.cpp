@@ -34,7 +34,7 @@ void updateAltDisplay(int16_t degrees, uint16_t milliwatts) {
     display.sendToDisplay(&degreesDisplay, &wattsDisplay);
 }
 
-static inline uint8_t isAltButtonPressed() { return 1; // TODO: FixME
+static inline bool isAltButtonPressed() {
     return GET_PORT_BIT(PIND, BUTTON_ALT_PIN);
 }
 
@@ -102,12 +102,6 @@ void initAll() {
     DDRB = 0;
     DDRC = 0;     
     DDRD = (1 << RECTIFIER_PIN) | (1 << FAN_PIN) | (0 << BUTTON_ALT_PIN);
-
-//// // TODO: FixME
-DDRD |= (1 << BUTTON_ALT_PIN) | (1 << 6);
-
-PORTD |= (1 << 6) | (0 << BUTTON_ALT_PIN);
-////
 
     adc.initialize();
     uart.Initialize();

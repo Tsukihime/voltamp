@@ -4,10 +4,10 @@
 void Format::degrees(int16_t degrees, TDisplay* display) { // [ -1.5] [ 22.1] [120.6]
     display->points = DISPLAY_THIRD_DOT;
     
-    int needMinusSign = 0;
+    bool needMinusSign = false;
     if(degrees < 0) {
         degrees = -degrees;
-        needMinusSign = 1;
+        needMinusSign = true;
     }
     bin2bcd(degrees, display->digits);
     

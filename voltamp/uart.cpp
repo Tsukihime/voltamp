@@ -93,10 +93,10 @@ void Uart::updateData(uint16_t millivolts, uint16_t milliamperes, int16_t degree
     uartData.amperes[4] = buffer[3];
     
 // degrees    
-    int addMinusSign = 0;
+    bool needMinusSign = false;
     if(degrees < 0) {
         degrees = -degrees;
-        addMinusSign = 1;        
+        needMinusSign = true;        
     }
 
     bin2bcd(degrees, buffer);    
@@ -114,7 +114,7 @@ void Uart::updateData(uint16_t millivolts, uint16_t milliamperes, int16_t degree
         i++;        
     }
     
-    if(addMinusSign) {
+    if(needMinusSign) {
         uartData.temperature[--i] = '-';
     }
 
