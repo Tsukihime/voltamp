@@ -1,0 +1,15 @@
+#ifndef DS18B20_DEFS_H_
+#define DS18B20_DEFS_H_
+
+#define DS18B20_SKIP_ROM         0xcc
+#define DS18B20_CONVERT_T        0x44
+#define DS18B20_READ_SCRATCHPAD  0xbe
+#define DS18B20_WRITE_SCRATCHPAD 0x4e
+
+#define DS18B20_RES_9BIT 0x1f
+#define DS18B20_RES_10BIT 0x3f
+#define DS18B20_RES_11BIT 0x5f
+#define DS18B20_RES_12BIT 0x7f
+
+
+#endif /* DS18B20_DEFS_H_ */

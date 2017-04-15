@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>5.1</ProjectVersion>
+    <ToolchainName>com.Atmel.AVRGCC8</ToolchainName>
+    <ProjectGuid>{3032e88f-be8d-49bd-a81c-6443cfd73e6a}</ProjectGuid>
+    <avrdevice>ATmega8</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>Executable</OutputType>
+    <Language>CPP</Language>
+    <OutputFileName>$(MSBuildProjectName)</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <AssemblyName>voltamp</AssemblyName>
+    <Name>voltamp</Name>
+    <RootNamespace>voltamp</RootNamespace>
+    <ToolchainFlavour>Native</ToolchainFlavour>
+    <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
+    <avrtoolinterface />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+  <avrgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>F_CPU=8000000</Value>
+    </ListValues>
+  </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.OtherFlags>-fdata-sections</avrgcc.compiler.optimization.OtherFlags>
+  <avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>F_CPU=8000000</Value>
+    </ListValues>
+  </avrgcccpp.compiler.symbols.DefSymbols>
+  <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
+  <avrgcccpp.compiler.optimization.OtherFlags>-fdata-sections</avrgcccpp.compiler.optimization.OtherFlags>
+  <avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+  <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
+</AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+  <avrgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>F_CPU=8000000</Value>
+    </ListValues>
+  </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
+  <avrgcccpp.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>F_CPU=8000000</Value>
+    </ListValues>
+  </avrgcccpp.compiler.symbols.DefSymbols>
+  <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
+  <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
+  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
+</AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="adc.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="adc.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="config.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="display.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="display.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="displayFormat.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="displayFormat.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="DS18B20_defs.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\1-wire-avr-lib\common_files\OWIcrc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\1-wire-avr-lib\common_files\OWIcrc.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\1-wire-avr-lib\common_files\OWIdefs.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\1-wire-avr-lib\common_files\OWIDeviceSpecific.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\1-wire-avr-lib\compilers.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\1-wire-avr-lib\OWIBitFunctions.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\1-wire-avr-lib\OWIdefs.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\1-wire-avr-lib\OWIHighLevelFunctions.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\1-wire-avr-lib\OWIHighLevelFunctions.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\1-wire-avr-lib\OWIPolled.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\1-wire-avr-lib\OWISWBitFunctions.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\1-wire-avr-lib\OWIUARTBitFunctions.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="temp.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="temp.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="timer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="timer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="uart.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="uart.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="utils.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="utils.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="voltamp.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="lib" />
+    <Folder Include="lib\1-wire-avr-lib" />
+    <Folder Include="lib\1-wire-avr-lib\common_files" />
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
+</Project>

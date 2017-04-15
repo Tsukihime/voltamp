@@ -1,0 +1,27 @@
+#ifndef _CONFIG_H_
+#define _CONFIG_H_
+
+#define UART_BAUDRATE 9600
+// #define UART_DOUBLESPEED
+
+#define VOLTS_ADC_CHANNEL 0
+#define AMPS_ADC_CHANNEL 1
+
+#define RECTIFIER_PIN 2
+#define FAN_PIN 3
+#define BUTTON_ALT_PIN 4
+
+#define RECTIFIER_UP_VOLTAGE 8000
+#define RECTIFIER_DOWN_VOLTAGE 7500
+
+#define FAN_ON_TEMP 60
+#define FAN_OFF_TEMP 45
+
+// display pins
+#define DISPLAY_ENABLE_PIN 0
+#define DISPLAY_DATA_PIN 1
+#define DISPLAY_CLOCK_PIN 2
+#define DISPLAY_PORT PORTB
+#define DISPLAY_DRECTION DDRB
+
+#endif /* _CONFIG_H_ */

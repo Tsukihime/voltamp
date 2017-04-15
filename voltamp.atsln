@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# AvrStudio Solution File, Format Version 11.00
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "voltamp", "voltamp\voltamp.cppproj", "{3032E88F-BE8D-49BD-A81C-6443CFD73E6A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3032E88F-BE8D-49BD-A81C-6443CFD73E6A}.Debug|AVR.ActiveCfg = Debug|AVR
+		{3032E88F-BE8D-49BD-A81C-6443CFD73E6A}.Debug|AVR.Build.0 = Debug|AVR
+		{3032E88F-BE8D-49BD-A81C-6443CFD73E6A}.Release|AVR.ActiveCfg = Release|AVR
+		{3032E88F-BE8D-49BD-A81C-6443CFD73E6A}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
