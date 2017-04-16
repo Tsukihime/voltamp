@@ -4,11 +4,18 @@
 
 Timer timer;
 
-ISR(TIMER2_COMP_vect) {
-    timer.ISRTimerFired();
+#define TCNT_INIT_VALUE (256 - (F_CPU / 1000 / 64)) // 0.001 sec
+
+ISR(TIMER0_OVF_vect) {
+    // ISR Prologue and write TCNT0 takes 34 cycles,
+    // interrupt call time 4-15 cycles
+    // timer prescaler is 64 and that more than 34 + 15
+    // Therefore, we are able to set TCNT0 before the timer is triggered at least once
+    TCNT0 = TCNT_INIT_VALUE;
+    timer.updateTaskStatus();
 }
 
-void Timer::ISRTimerFired() {
+void Timer::updateTaskStatus() {
     for (uint8_t i = 0; i < taskCount; i++) {
         tasks[i].counter++;
         if(tasks[i].counter >= tasks[i].period) {
@@ -20,12 +27,9 @@ void Timer::ISRTimerFired() {
 
 void Timer::initialize() {
     taskCount = 0;
-
-    TCCR2 = (1 << CS22) | (0 << CS21) | (0 << CS20); // prescaler 64
-    TCCR2 |= (1 << WGM21) | (0 << WGM20);            // CTC mode
-    OCR2 = (F_CPU / 1000 / 64);                      // compare reset value 0,001 sec
-    TCNT2 = 0;
-    TIMSK |= (1 << OCIE2); // Timer/Counter2 Output Compare Match Interrupt Enable
+    TCNT0 = TCNT_INIT_VALUE;
+    TCCR0 = (0 << CS02) | (1 << CS01) | (1 << CS00); // clock source = clkIO/64 From prescaler
+    TIMSK |= (1 << TOIE0); // Timer/Counter0 Overflow Interrupt Enable.
 }
 
 void Timer::processTasks() {

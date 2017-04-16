@@ -5,10 +5,10 @@
 
 typedef void(*TProcedurePointer)();
 
-extern "C" void TIMER2_COMP_vect(void) __attribute__((signal));
+extern "C" void TIMER0_OVF_vect(void) __attribute__((signal));
 
 class Timer {
-    friend void TIMER2_COMP_vect();
+    friend void TIMER0_OVF_vect();
 
     public:
         void initialize();
@@ -26,7 +26,7 @@ class Timer {
         volatile TimerTask tasks[MAX_TIMER_TASK_COUNT];
         volatile uint8_t taskCount;
 
-        void ISRTimerFired();
+        void updateTaskStatus();
 };
 
 extern Timer timer;
