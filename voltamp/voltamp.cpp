@@ -114,12 +114,11 @@ void initAll() {
 
 int main(void) {
     initAll();
-    
-    TimerTask tasks[2];
-    tasks[0] = timer.makeTask(107, &processVoltageMeasurement);
-    tasks[1] = timer.makeTask(1009, &processRadiatorTemperature);
-    
+
+    timer.addTask(100, &processVoltageMeasurement);
+    timer.addTask(1000, &processRadiatorTemperature);
+
     while (1) {
-        timer.sync(tasks, sizeof(tasks) / sizeof(TimerTask));
+        timer.processTasks();
     }
 }

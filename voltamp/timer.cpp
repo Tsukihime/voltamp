@@ -3,13 +3,24 @@
 #include "timer.h"
 
 Timer timer;
-volatile bool mainTimerFired;
 
 ISR(TIMER2_COMP_vect) {
-    mainTimerFired = true;
+    timer.ISRTimerFired();
+}
+
+void Timer::ISRTimerFired() {
+    for (uint8_t i = 0; i < taskCount; i++) {
+        tasks[i].counter++;
+        if(tasks[i].counter >= tasks[i].period) {
+            tasks[i].counter = 0;
+            tasks[i].isReady = true;
+        }
+    }
 }
 
 void Timer::initialize() {
+    taskCount = 0;
+
     TCCR2 = (1 << CS22) | (0 << CS21) | (0 << CS20); // prescaler 64
     TCCR2 |= (1 << WGM21) | (0 << WGM20);            // CTC mode
     OCR2 = (F_CPU / 1000 / 64);                      // compare reset value 0,001 sec
@@ -17,33 +28,27 @@ void Timer::initialize() {
     TIMSK |= (1 << OCIE2); // Timer/Counter2 Output Compare Match Interrupt Enable
 }
 
-void Timer::waitNextTick() {    
-    while(!mainTimerFired) {
-        // wait until timer fired
-    }
-    mainTimerFired = false; // reset fired flag
-}
-
-void Timer::processTask(TimerTask *task) {
-    task->counter++; 
-    if(task->counter >= task->period) {
-        task->counter = 0;
-        task->callback();
+void Timer::processTasks() {
+    for(uint8_t i = 0; i < taskCount; i++){
+        if(tasks[i].isReady) {
+            tasks[i].isReady = false;
+            tasks[i].callback();
+        }
     }
 }
 
-TimerTask Timer::makeTask(uint16_t period_ms, TPROC callback) {
-    TimerTask res;
-    res.callback = callback;
-    res.period = period_ms;
-    res.counter = 0;
-    return res;
-}
-
-void Timer::sync(TimerTask tasks[], uint8_t task_count) {
-    uint8_t i;
-    waitNextTick();
-    for(i = 0; i < task_count; i++){
-        processTask(&tasks[i]);
+bool Timer::addTask(uint16_t period_ms, TProcedurePointer callback)
+{
+    if (taskCount >= MAX_TIMER_TASK_COUNT) {
+        return false;
     }
+
+    tasks[taskCount].callback = callback;
+    tasks[taskCount].period = period_ms;
+    tasks[taskCount].counter = 0;
+    tasks[taskCount].isReady = false;
+
+    taskCount++;
+
+    return true;
 }
