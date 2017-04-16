@@ -26,7 +26,7 @@ EMPTY_INTERRUPT(ADC_vect)
 // return 10 bit measure
 uint16_t Adc::getValue(uint8_t channel) {
     channel &= ADCMUX_MASK;
-    ADMUX = (ADMUX & ADCMUX_MASK) | channel;
+    ADMUX = (ADMUX & ~ADCMUX_MASK) | channel;
     
     // Enter Sleep Mode To Trigger ADC Measurement
     set_sleep_mode(SLEEP_MODE_ADC);
@@ -42,8 +42,7 @@ uint16_t Adc::getValue(uint8_t channel) {
 
 uint16_t Adc::getOversampled12bitValue(uint8_t channel) {
     uint16_t summa = 0;
-    uint8_t i;
-    for (i = 0; i < ADC_OVERSAMPLE_MEASURE_COUNT; i++) {
+    for (uint8_t i = 0; i < ADC_OVERSAMPLE_MEASURE_COUNT; i++) {
         summa += getValue(channel);
     }
     return (summa >> ADC_OVERSAMPLE_EXTRA_BIT_COUNT);
