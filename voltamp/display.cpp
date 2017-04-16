@@ -15,9 +15,8 @@ void Display::initialize() {
     SET_PORT_BIT(DISPLAY_DRECTION, DISPLAY_CLOCK_PIN);
 }
 
-void Display::sendUpTo16Bit(uint16_t data, int bitCount) {
-    int i;
-    for(i = 0; i < bitCount; i++) {
+void Display::sendUpTo16Bit(uint16_t data, uint8_t bitCount) {
+    for(uint8_t i = 0; i < bitCount; i++) {
         if(data & 0x8000) { // if MSB is 1
             SET_PORT_BIT(DISPLAY_PORT, DISPLAY_DATA_PIN);
         } else {

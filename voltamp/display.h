@@ -27,7 +27,7 @@ class Display {
         TDisplay oldFirstDisplay;
         TDisplay oldSecondDisplay;
     
-        static void sendUpTo16Bit(uint16_t data, int bitCount);
+        static void sendUpTo16Bit(uint16_t data, uint8_t bitCount);
         void sendDisplayBlock(TDisplay* display);
         void resetDisplay();
         void switchToNextDispay();
