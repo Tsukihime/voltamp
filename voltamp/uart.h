@@ -26,7 +26,7 @@ class Uart {
         volatile uint8_t currentChar;
 
         void startDataTransmit();
-        void ISRTransmitCompleteRoutine();
+        void ISRTransmitComplete();
 
     public:
         void Initialize(void);

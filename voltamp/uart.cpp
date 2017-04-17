@@ -14,10 +14,10 @@ Uart uart;
 #endif
 
 ISR(USART_TXC_vect) {
-    uart.ISRTransmitCompleteRoutine();
+    uart.ISRTransmitComplete();
 }
 
-void Uart::ISRTransmitCompleteRoutine() {
+void Uart::ISRTransmitComplete() {
     if(currentChar >= sizeof(TUARTSTR)) {
         currentChar = 0;
         CLR_PORT_BIT(UCSRB, TXCIE); // Disable the USART Transmit Complete interrupt (USART_TXC)
@@ -30,7 +30,7 @@ void Uart::ISRTransmitCompleteRoutine() {
 void Uart::startDataTransmit() {
     while(currentChar != 0);    // wait while last transmit completes
     SET_PORT_BIT(UCSRB, TXCIE); // Enable the USART Transmit Complete interrupt (USART_TXC)
-    ISRTransmitCompleteRoutine();
+    ISRTransmitComplete();
 }
 
 void Uart::Initialize(void) {
