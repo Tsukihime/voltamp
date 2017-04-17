@@ -79,19 +79,18 @@ void processVoltageMeasurement() {
 }
 
 void processRadiatorTemperature() {
-    static int state = 0;
-    switch (state) {
-    case 0:
-        temperatureSensor.startMeasurement();
-        state = 1;
-        break;
+    static bool isFirstCall = true;
 
-    default:
-        state = 0;
-        rawTemperature = temperatureSensor.readRawTemperature();        
-        int16_t radiatorTemperatureCelsium = rawTemperature / 16;
-        updateFanState(radiatorTemperatureCelsium);
+    if(isFirstCall) {
+        temperatureSensor.startMeasurement();
+        isFirstCall = false;
+        return;
     }
+
+    rawTemperature = temperatureSensor.readRawTemperature();
+    temperatureSensor.startMeasurement();
+    int16_t radiatorTemperatureCelsium = rawTemperature / 16;
+    updateFanState(radiatorTemperatureCelsium);
 }
 
 void initAll() {
@@ -116,7 +115,7 @@ int main(void) {
     initAll();
 
     timer.addTask(100, &processVoltageMeasurement);
-    timer.addTask(1000, &processRadiatorTemperature);
+    timer.addTask(800, &processRadiatorTemperature);
 
     while (1) {
         timer.processTasks();
