@@ -15,16 +15,6 @@ ISR(TIMER0_OVF_vect) {
     timer.updateTaskStatus();
 }
 
-void Timer::updateTaskStatus() {
-    for (uint8_t i = 0; i < taskCount; i++) {
-        tasks[i].counter++;
-        if(tasks[i].counter >= tasks[i].period) {
-            tasks[i].counter = 0;
-            tasks[i].isReady = true;
-        }
-    }
-}
-
 void Timer::initialize() {
     taskCount = 0;
     TCNT0 = TCNT_INIT_VALUE;

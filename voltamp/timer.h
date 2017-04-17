@@ -26,7 +26,15 @@ class Timer {
         volatile TimerTask tasks[MAX_TIMER_TASK_COUNT];
         volatile uint8_t taskCount;
 
-        void updateTaskStatus();
+        inline void updateTaskStatus() {
+            for (uint8_t i = 0; i < taskCount; i++) {
+                tasks[i].counter++;
+                if(tasks[i].counter >= tasks[i].period) {
+                    tasks[i].counter = 0;
+                    tasks[i].isReady = true;
+                }
+            }
+        }
 };
 
 extern Timer timer;
