@@ -1,6 +1,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <string.h>
+#include <util/delay.h>
 
 #include "display.h"
 #include "uart.h"
@@ -24,7 +25,9 @@ void Display::sendUpTo16Bit(uint16_t data, uint8_t bitCount) {
         }
         // do clock
         SET_PORT_BIT(DISPLAY_PORT, DISPLAY_CLOCK_PIN);
+        _delay_us(2);
         CLR_PORT_BIT(DISPLAY_PORT, DISPLAY_CLOCK_PIN);
+        _delay_us(1); // 1us + 1 cycle loop = 2.5 us
         data <<= 1;
     }
 }
