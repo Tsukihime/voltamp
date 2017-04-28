@@ -27,9 +27,11 @@ void TemperatureSensor::startMeasurement() {
     OWI_SendByte(DS18B20_CONVERT_T, TEMP_PIN);
 }
 
-int16_t TemperatureSensor::readRawTemperature() {    
-    /*wait while semsor complete measurement*/
-    //while (!OWI_ReadBit(BUS));
+/**
+    @returns 12 bit fixed point value with 4 bit exponent
+*/
+int16_t TemperatureSensor::readTemperature() {    
+    while (!OWI_ReadBit(TEMP_PIN)); // wait while sensor complete measurement
 
     OWI_DetectPresence(TEMP_PIN);
     OWI_SkipRom(TEMP_PIN);

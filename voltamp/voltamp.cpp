@@ -12,7 +12,7 @@
 #include "utils.h"
 #include "config.h"
 
-int16_t rawTemperature = 0;
+int16_t q4Temperature = 0; ///< fixed point value with 4 bit exponent
 
 void updateMainDisplay(uint16_t millivolts, uint16_t milliamperes) {
     TDisplay voltsDisplay;    
@@ -47,7 +47,7 @@ void updateRectifierVoltage(uint16_t millivolts) {
     }
 }
 
-void updateFanState(int16_t temperature) {
+void updateFanState(int8_t temperature) {
     if (temperature >= FAN_ON_TEMP) {
         SET_PORT_BIT(PORTD, FAN_PIN);
     }
@@ -66,7 +66,7 @@ void processVoltageMeasurement() {
 
     updateRectifierVoltage(millivolts);
     
-    int16_t degrees = rawTemperature * 5 / 8;
+    int16_t degrees = (q4Temperature * 10) >> 4;
 
     if(isAltButtonPressed()){
         uint16_t milliwatts = (uint32_t)millivolts * (uint32_t)milliamperes / 1000;
@@ -87,10 +87,10 @@ void processRadiatorTemperature() {
         return;
     }
 
-    rawTemperature = temperatureSensor.readRawTemperature();
+    q4Temperature = temperatureSensor.readTemperature();
     temperatureSensor.startMeasurement();
-    int16_t radiatorTemperatureCelsium = rawTemperature / 16;
-    updateFanState(radiatorTemperatureCelsium);
+    int8_t radiatorTemperature = q4Temperature >> 4;
+    updateFanState(radiatorTemperature);
 }
 
 void initAll() {

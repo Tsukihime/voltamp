@@ -7,7 +7,7 @@ class TemperatureSensor {
     public:
         void initialize();
         void startMeasurement();
-        int16_t readRawTemperature();
+        int16_t readTemperature();
 };
 
 extern TemperatureSensor temperatureSensor;
