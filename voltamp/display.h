@@ -26,13 +26,6 @@ class Display {
     private:
         TDisplay oldFirstDisplay;
         TDisplay oldSecondDisplay;
-    
-        static void sendUpTo16Bit(uint16_t data, uint8_t bitCount);
-        void sendDisplayBlock(TDisplay* display);
-        void resetDisplay();
-        void switchToNextDispay();
-        int isSameDisplays(TDisplay* first, TDisplay* second);
-        void copyDisplays(TDisplay* dest, TDisplay* src);
 };
 
 extern Display display;
