@@ -29,7 +29,7 @@ class Uart {
         void ISRTransmitComplete();
 
     public:
-        void Initialize(void);
+        void initialize(void);
         void updateData(uint16_t millivolts, uint16_t milliamperes, int16_t degrees);
 };
 

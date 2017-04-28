@@ -33,7 +33,7 @@ void Uart::startDataTransmit() {
     ISRTransmitComplete();
 }
 
-void Uart::Initialize(void) {
+void Uart::initialize(void) {
     // Set baud rate
     UBRRH = (UART_CALC_BAUDRATE(UART_BAUDRATE) >> 8) & 0xFF;
     UBRRL = (UART_CALC_BAUDRATE(UART_BAUDRATE) & 0xFF);

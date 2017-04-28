@@ -103,7 +103,7 @@ void initAll() {
     DDRD = (1 << RECTIFIER_PIN) | (1 << FAN_PIN) | (0 << BUTTON_ALT_PIN);
 
     adc.initialize();
-    uart.Initialize();
+    uart.initialize();
     display.initialize();
     timer.initialize();
     temperatureSensor.initialize();
