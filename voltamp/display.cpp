@@ -33,7 +33,6 @@ static void sendUpTo16Bit(uint16_t data, uint8_t bitCount) {
 }
 
 static void sendDisplayBlock(TDisplay* display) {
-    CLR_PORT_BIT(DISPLAY_PORT, DISPLAY_ENABLE_PIN); // ENB active LOW to start send    
     uint16_t data = 0;
     
     // send dots
@@ -51,12 +50,12 @@ static void sendDisplayBlock(TDisplay* display) {
     data <<= 4;
     data |= display->digits[3];
     sendUpTo16Bit(data, 16);
-    SET_PORT_BIT(DISPLAY_PORT, DISPLAY_ENABLE_PIN); // ENB HIGH to load latch
 }
 
 static void resetDisplay() {
     CLR_PORT_BIT(DISPLAY_PORT, DISPLAY_CLOCK_PIN);
     SET_PORT_BIT(DISPLAY_PORT, DISPLAY_ENABLE_PIN);
+    _delay_us(2);
 }
 
 static void switchToNextDispay() { // Cascading    
@@ -64,6 +63,7 @@ static void switchToNextDispay() { // Cascading
     sendUpTo16Bit(0xFFFF, 4); // first four is 1    
     sendUpTo16Bit(0, 16);     // remaining 16 is unimportant
     SET_PORT_BIT(DISPLAY_PORT, DISPLAY_ENABLE_PIN); // ENB HIGH to load latch
+    _delay_us(2);
 }
 
 static bool isSameDisplays(TDisplay* first, TDisplay* second) {
@@ -84,6 +84,9 @@ void Display::sendToDisplay(TDisplay* firstDisplay, TDisplay* secondDisplay) {
 
     resetDisplay();
     switchToNextDispay();
+
+    CLR_PORT_BIT(DISPLAY_PORT, DISPLAY_ENABLE_PIN); // ENB active LOW to start send
     sendDisplayBlock(secondDisplay);
     sendDisplayBlock(firstDisplay);
+    SET_PORT_BIT(DISPLAY_PORT, DISPLAY_ENABLE_PIN); // ENB HIGH to load latch
 }
