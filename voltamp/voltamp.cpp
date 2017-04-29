@@ -93,15 +93,20 @@ void processRadiatorTemperature() {
     updateFanState(radiatorTemperature);
 }
 
+#define ALL_INPUT (0x00)
+#define ALL_PULLUP (0xff)
+static void voltampInitialize() {
+    DDRB = ALL_INPUT;
+    DDRC = ALL_INPUT;
+    DDRD = (1 << RECTIFIER_PIN) | (1 << FAN_PIN);
+
+    PORTB = ALL_PULLUP;
+    PORTC = ALL_PULLUP;
+    PORTD = ALL_PULLUP & ~((1 << RECTIFIER_PIN) | (1 << FAN_PIN));
+}
+
 void initAll() {
-    PORTB = 0;
-    PORTC = 0;
-    PORTD = 0;
-
-    DDRB = 0;
-    DDRC = 0;     
-    DDRD = (1 << RECTIFIER_PIN) | (1 << FAN_PIN) | (0 << BUTTON_ALT_PIN);
-
+    voltampInitialize();
     adc.initialize();
     uart.initialize();
     display.initialize();
