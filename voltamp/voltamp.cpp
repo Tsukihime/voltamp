@@ -101,7 +101,7 @@ static void voltampInitialize() {
     DDRD = (1 << RECTIFIER_PIN) | (1 << FAN_PIN);
 
     PORTB = ALL_PULLUP;
-    PORTC = ALL_PULLUP;
+    PORTC = ALL_PULLUP & ~((1 << VOLTS_ADC_CHANNEL) | (1 << AMPS_ADC_CHANNEL));
     PORTD = ALL_PULLUP & ~((1 << RECTIFIER_PIN) | (1 << FAN_PIN));
 }
 
