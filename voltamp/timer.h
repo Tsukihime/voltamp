@@ -17,11 +17,11 @@ class Timer {
 
         bool addTask(uint16_t period_ms, TProcedurePointer callback);
 
-        inline void disableInterrupts() {
+        inline void disableTimerInterrupts() {
             TIMSK &= ~(1 << OCIE2); // Timer/Counter2 Output Compare Match Interrupt Disable
         }
 
-        inline void enableInterrupts() {
+        inline void enableTimerInterrupts() {
             TIMSK |= (1 << OCIE2); // Timer/Counter2 Output Compare Match Interrupt Enable
         }
 

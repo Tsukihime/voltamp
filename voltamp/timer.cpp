@@ -18,7 +18,7 @@ void Timer::initialize() {
     TCCR2 = TIMER2_PRESCALER_DIV64 | TIMER2_CTC_MODE;
     OCR2 = COMPARE_RESET_DIV64_1MS_VALUE;
     TCNT2 = 0;
-    enableInterrupts();
+    enableTimerInterrupts();
 }
 
 void Timer::processTasks() {
@@ -29,7 +29,7 @@ void Timer::processTasks() {
         }
     }
 }
-#include "utils.h"
+
 void Timer::run() {
     while(true) {
         processTasks();        

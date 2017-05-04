@@ -17,10 +17,10 @@ static void selectAdcChannel(uint8_t channel) {
 EMPTY_INTERRUPT(ADC_vect)
 
 static uint16_t getAdcValue() {
-    timer.disableInterrupts();      // To prevent timer wakeup CPU before ADC complete measurement
+    timer.disableTimerInterrupts();      // To prevent timer wakeup CPU before ADC complete measurement
     set_sleep_mode(SLEEP_MODE_ADC); // Enter Sleep Mode To Trigger ADC Measurement
     sleep_mode();                   // CPU Will Wake Up From ADC Interrupt
-    timer.enableInterrupts();
+    timer.enableTimerInterrupts();
     return ADC;
 }
 
