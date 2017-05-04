@@ -57,12 +57,8 @@ void updateFanState(int8_t temperature) {
 }
 
 void processVoltageMeasurement() {
-    uint16_t adcVolt = adc.getOversampled12bitValue(VOLTS_ADC_CHANNEL);
-    uint16_t adcAmpere = adc.getOversampled12bitValue(AMPS_ADC_CHANNEL);
-
-    // ref = 2.46V
-    uint16_t millivolts = adcVolt * 4; // 4092 = 16.368V
-    uint16_t milliamperes = adcAmpere / 2;//(adcAmpere * 5 + 4 /*4.5 for round*/ ) / 9;
+    uint16_t millivolts = adc.getOversampledValue(VOLTS_ADC_CHANNEL, 4); // 16368 = 16.368 V
+    uint16_t milliamperes = adc.getOversampledValue(AMPS_ADC_CHANNEL, 2) / 2; // 4092 = 2.046 A
 
     updateRectifierVoltage(millivolts);
     
@@ -121,8 +117,5 @@ int main(void) {
 
     timer.addTask(100, &processVoltageMeasurement);
     timer.addTask(800, &processRadiatorTemperature);
-
-    while (1) {
-        timer.processTasks();
-    }
+    timer.run();
 }

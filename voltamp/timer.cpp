@@ -1,25 +1,24 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/sleep.h>
 #include "timer.h"
 
 Timer timer;
 
-#define TCNT_INIT_VALUE (256 - (F_CPU / 1000 / 64)) // 0.001 sec
-
-ISR(TIMER0_OVF_vect) {
-    // ISR Prologue and write TCNT0 takes 34 cycles,
-    // interrupt call time 4-15 cycles
-    // timer prescaler is 64 and that more than 34 + 15
-    // Therefore, we are able to set TCNT0 before the timer is triggered at least once
-    TCNT0 = TCNT_INIT_VALUE;
+ISR(TIMER2_COMP_vect) {
     timer.updateTaskStatus();
 }
 
+#define TIMER2_PRESCALER_DIV64 ((1 << CS22) | (0 << CS21) | (0 << CS20))
+#define TIMER_CTC_MODE ((1 << WGM21) | (0 << WGM20))
+#define COMPARE_RESET_DIV64_1MS_VALUE ((F_CPU / 1000 / 64) - 1)
+
 void Timer::initialize() {
     taskCount = 0;
-    TCNT0 = TCNT_INIT_VALUE;
-    TCCR0 = (0 << CS02) | (1 << CS01) | (1 << CS00); // clock source = clkIO/64 From prescaler
-    TIMSK |= (1 << TOIE0); // Timer/Counter0 Overflow Interrupt Enable.
+    TCCR2 = TIMER2_PRESCALER_DIV64 | TIMER_CTC_MODE;
+    OCR2 = COMPARE_RESET_DIV64_1MS_VALUE;
+    TCNT2 = 0;
+    enableInterrupts();
 }
 
 void Timer::processTasks() {
@@ -28,6 +27,14 @@ void Timer::processTasks() {
             tasks[i].isReady = false;
             tasks[i].callback();
         }
+    }
+}
+#include "utils.h"
+void Timer::run() {
+    while(true) {
+        processTasks();        
+        set_sleep_mode(SLEEP_MODE_IDLE); // Enter Sleep Mode To Save Power
+        sleep_mode();                    // CPU Will Wake Up From Timer2 Interrupt
     }
 }
 

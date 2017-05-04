@@ -5,15 +5,25 @@
 
 typedef void(*TProcedurePointer)();
 
-extern "C" void TIMER0_OVF_vect(void) __attribute__((signal));
+extern "C" void TIMER2_COMP_vect(void) __attribute__((signal));
 
 class Timer {
-    friend void TIMER0_OVF_vect();
+    friend void TIMER2_COMP_vect();
 
     public:
         void initialize();
-        void processTasks();       
+        void processTasks();
+        void run();
+
         bool addTask(uint16_t period_ms, TProcedurePointer callback);
+
+        inline void disableInterrupts() {
+            TIMSK &= ~(1 << OCIE2); // Timer/Counter2 Output Compare Match Interrupt Disable
+        }
+
+        inline void enableInterrupts() {
+            TIMSK |= (1 << OCIE2); // Timer/Counter2 Output Compare Match Interrupt Enable
+        }
 
     private:
         typedef struct {
