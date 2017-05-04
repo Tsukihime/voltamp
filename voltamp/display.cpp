@@ -14,6 +14,10 @@ void Display::initialize() {
     SET_PORT_BIT(DISPLAY_DRECTION, DISPLAY_ENABLE_PIN);
     SET_PORT_BIT(DISPLAY_DRECTION, DISPLAY_DATA_PIN);
     SET_PORT_BIT(DISPLAY_DRECTION, DISPLAY_CLOCK_PIN);
+
+    CLR_PORT_BIT(DISPLAY_PORT, DISPLAY_ENABLE_PIN);
+    CLR_PORT_BIT(DISPLAY_PORT, DISPLAY_DATA_PIN);
+    CLR_PORT_BIT(DISPLAY_PORT, DISPLAY_CLOCK_PIN);
 }
 
 static void sendUpTo16Bit(uint16_t data, uint8_t bitCount) {
@@ -52,16 +56,10 @@ static void sendDisplayBlock(TDisplay* display) {
     sendUpTo16Bit(data, 16);
 }
 
-static void resetDisplay() {
-    CLR_PORT_BIT(DISPLAY_PORT, DISPLAY_CLOCK_PIN);
-    SET_PORT_BIT(DISPLAY_PORT, DISPLAY_ENABLE_PIN);
-    _delay_us(2);
-}
-
 static void switchToNextDispay() { // Cascading    
     CLR_PORT_BIT(DISPLAY_PORT, DISPLAY_ENABLE_PIN); // ENB active LOW to start send
     sendUpTo16Bit(0xFFFF, 4); // first four is 1    
-    sendUpTo16Bit(0, 16);     // remaining 16 is unimportant
+    sendUpTo16Bit(0xFFFF, 16);// remaining 16 is blanks
     SET_PORT_BIT(DISPLAY_PORT, DISPLAY_ENABLE_PIN); // ENB HIGH to load latch
     _delay_us(2);
 }
@@ -82,7 +80,6 @@ void Display::sendToDisplay(TDisplay* firstDisplay, TDisplay* secondDisplay) {
     copyDisplays(&oldFirstDisplay, firstDisplay);
     copyDisplays(&oldSecondDisplay, secondDisplay);
 
-    resetDisplay();
     switchToNextDispay();
 
     CLR_PORT_BIT(DISPLAY_PORT, DISPLAY_ENABLE_PIN); // ENB active LOW to start send
