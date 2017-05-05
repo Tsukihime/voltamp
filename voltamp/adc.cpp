@@ -17,11 +17,13 @@ static void selectAdcChannel(uint8_t channel) {
 EMPTY_INTERRUPT(ADC_vect)
 
 static uint16_t getAdcValue() {
-    timer.disableTimerInterrupts();      // To prevent timer wakeup CPU before ADC complete measurement
-    set_sleep_mode(SLEEP_MODE_ADC); // Enter Sleep Mode To Trigger ADC Measurement
-    sleep_mode();                   // CPU Will Wake Up From ADC Interrupt
-    timer.enableTimerInterrupts();
-    return ADC;
+    uint16_t result;
+    TIMER_NO_ISR_BLOCK {                // To prevent timer wakeup CPU before ADC complete measurement
+        set_sleep_mode(SLEEP_MODE_ADC); // Enter Sleep Mode To Trigger ADC Measurement
+        sleep_mode();                   // CPU Will Wake Up From ADC Interrupt
+        result = ADC;
+    }
+    return result;
 }
 
 #define ADC_EXTERNAL_AREF ((0 << REFS1) | (0 << REFS0))

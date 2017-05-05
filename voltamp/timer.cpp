@@ -11,6 +11,7 @@ ISR(TIMER2_COMP_vect) {
 
 #define TIMER2_PRESCALER_DIV64 ((1 << CS22) | (0 << CS21) | (0 << CS20))
 #define TIMER2_CTC_MODE ((1 << WGM21) | (0 << WGM20))
+#define TIMER2_COMPARE_MATCH_INTERRUPT_ENABLE (1 << OCIE2)
 #define COMPARE_RESET_DIV64_1MS_VALUE ((F_CPU / 1000 / 64) - 1)
 
 void Timer::initialize() {
@@ -18,7 +19,7 @@ void Timer::initialize() {
     TCCR2 = TIMER2_PRESCALER_DIV64 | TIMER2_CTC_MODE;
     OCR2 = COMPARE_RESET_DIV64_1MS_VALUE;
     TCNT2 = 0;
-    enableTimerInterrupts();
+    TIMSK = TIMER2_COMPARE_MATCH_INTERRUPT_ENABLE;
 }
 
 void Timer::processTasks() {

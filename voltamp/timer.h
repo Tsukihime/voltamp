@@ -17,14 +17,6 @@ class Timer {
 
         bool addTask(uint16_t period_ms, TProcedurePointer callback);
 
-        inline void disableTimerInterrupts() {
-            TIMSK &= ~(1 << OCIE2); // Timer/Counter2 Output Compare Match Interrupt Disable
-        }
-
-        inline void enableTimerInterrupts() {
-            TIMSK |= (1 << OCIE2); // Timer/Counter2 Output Compare Match Interrupt Enable
-        }
-
     private:
         typedef struct {
             uint16_t period;
@@ -48,5 +40,17 @@ class Timer {
 };
 
 extern Timer timer;
+
+static inline void __timsk_clean_up(uint8_t *timskOldValue) {
+    TIMSK = *timskOldValue;
+}
+
+static inline uint8_t __disaleTimerInterrupts() {
+    TIMSK &= ~((1 << OCIE2) | (1 << TOIE2));
+    return 1;
+}
+
+#define TIMER_NO_ISR_BLOCK for ( uint8_t timsk_save __attribute__((__cleanup__(__timsk_clean_up))) = TIMSK, \
+__ToDo = __disaleTimerInterrupts(); __ToDo ; __ToDo = 0 )
 
 #endif /* TIMER_H_ */
