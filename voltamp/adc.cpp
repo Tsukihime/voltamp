@@ -52,8 +52,9 @@ inline void adcDisable() {
 uint16_t Adc::getValue(uint8_t channel) {
     adcEnable();
     selectAdcChannel(channel);
-    return getAdcValue();
+    uint16_t adcValue = getAdcValue();
     adcDisable();
+    return adcValue;
 }
 
 /**
