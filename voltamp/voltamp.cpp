@@ -58,7 +58,14 @@ void updateFanState(int8_t temperature) {
 
 void processVoltageMeasurement() {
     uint16_t millivolts = adc.getOversampledValue(VOLTS_ADC_CHANNEL, 4); // 16368 = 16.368 V
-    uint16_t milliamperes = adc.getOversampledValue(AMPS_ADC_CHANNEL, 2) / 2; // 4092 = 2.046 A
+    uint16_t ampAdcValue = adc.getOversampledValue(AMPS_ADC_CHANNEL, 3); // 8184 = 2.046 A
+
+    uint16_t milliamperes = (ampAdcValue + 2) / 4;
+
+    if(millivolts != 0) {
+        millivolts += 20; // volts offset
+    }
+
 
     updateRectifierVoltage(millivolts);
     
