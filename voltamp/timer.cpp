@@ -1,6 +1,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
+#include <avr/cpufunc.h>
 #include "timer.h"
 
 Timer timer;
@@ -33,7 +34,7 @@ void Timer::processTasks() {
 
 void Timer::run() {
     while(true) {
-        processTasks();        
+        processTasks();
         set_sleep_mode(SLEEP_MODE_IDLE); // Enter Sleep Mode To Save Power
         sleep_mode();                    // CPU Will Wake Up From Timer2 Interrupt
     }
@@ -50,6 +51,7 @@ bool Timer::addTask(uint16_t period_ms, TProcedurePointer callback)
     tasks[taskCount].counter = 0;
     tasks[taskCount].isReady = false;
 
+    _MemoryBarrier();
     taskCount++;
 
     return true;

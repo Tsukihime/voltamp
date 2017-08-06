@@ -25,8 +25,8 @@ class Timer {
             TProcedurePointer callback;
         } TimerTask;
 
-        volatile TimerTask tasks[MAX_TIMER_TASK_COUNT];
-        volatile uint8_t taskCount;
+        TimerTask tasks[MAX_TIMER_TASK_COUNT];
+        uint8_t taskCount;
 
         inline void updateTaskStatus() {
             for (uint8_t i = 0; i < taskCount; i++) {
