@@ -15,21 +15,21 @@
 int16_t q4Temperature = 0; ///< fixed point value with 4 bit exponent
 
 void updateMainDisplay(uint16_t millivolts, uint16_t milliamperes) {
-    TDisplay voltsDisplay;    
-    Format::volts(millivolts, &voltsDisplay);
+    TDisplay voltsDisplay;
+    Format::fixedPointWithLeadingBlank(millivolts, &voltsDisplay);
     
     TDisplay amperesDisplay;
-    Format::amperes(milliamperes, &amperesDisplay);
+    Format::fixedPoint4Didgits(milliamperes, &amperesDisplay);
 
     display.sendToDisplay(&voltsDisplay, &amperesDisplay);
 }
 
 void updateAltDisplay(int16_t degrees, uint16_t milliwatts) {
-    TDisplay degreesDisplay;    
-    Format::degrees(degrees, &degreesDisplay);
+    TDisplay degreesDisplay;
+    Format::fixedPointWithMinusSign(degrees, &degreesDisplay);
     
     TDisplay wattsDisplay;
-    Format::watts(milliwatts, &wattsDisplay);
+    Format::floatingPoint4Didgits(milliwatts, &wattsDisplay);
 
     display.sendToDisplay(&degreesDisplay, &wattsDisplay);
 }

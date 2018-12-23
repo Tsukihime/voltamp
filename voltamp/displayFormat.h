@@ -6,10 +6,10 @@
 
 class Format {
     public:
-    static void degrees(int16_t degrees, TDisplay* display);
-    static void watts(uint16_t milliwatts, TDisplay* display);
-    static void amperes(uint16_t milliamperes, TDisplay* display);
-    static void volts(uint16_t millivolts, TDisplay* display);    
+    static void fixedPointWithMinusSign(int16_t value, TDisplay* display);
+    static void floatingPoint4Didgits(uint16_t value, TDisplay* display);
+    static void fixedPoint4Didgits(uint16_t value, TDisplay* display);
+    static void fixedPointWithLeadingBlank(uint16_t value, TDisplay* display);    
 };
 
 

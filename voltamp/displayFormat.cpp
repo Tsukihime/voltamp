@@ -1,15 +1,15 @@
 #include "displayFormat.h"
 #include "utils.h"
 
-void Format::degrees(int16_t degrees, TDisplay* display) { // [ -1.5] [ 22.1] [120.6]
+void Format::fixedPointWithMinusSign(int16_t value, TDisplay* display) { // [ -1.5] [ 22.1] [120.6]
     display->points = DISPLAY_THIRD_DOT;
     
     bool needMinusSign = false;
-    if(degrees < 0) {
-        degrees = -degrees;
+    if(value < 0) {
+        value = -value;
         needMinusSign = true;
     }
-    bin2bcd(degrees, display->digits);
+    bin2bcd(value, display->digits);
     
     // remove leading zeros
     int i = 0;
@@ -23,25 +23,25 @@ void Format::degrees(int16_t degrees, TDisplay* display) { // [ -1.5] [ 22.1] [1
     }
 }
 
-void Format::watts(uint16_t milliwatts, TDisplay* display) { // [17.52] [2.592]
-    if(milliwatts > 9999) {
+void Format::floatingPoint4Didgits(uint16_t value, TDisplay* display) { // [17.52] [2.592]
+    if(value > 9999) {
         display->points = DISPLAY_SECOND_DOT;
-        bin2bcd(milliwatts / 10, display->digits);
+        bin2bcd(value / 10, display->digits);
         } else {
         display->points = DISPLAY_FIRST_DOT;
-        bin2bcd(milliwatts, display->digits);
+        bin2bcd(value, display->digits);
     }
 }
 
-void Format::amperes(uint16_t milliamperes, TDisplay* display) { // [2.004] [0.100]
-    bin2bcd(milliamperes, display->digits);
+void Format::fixedPoint4Didgits(uint16_t value, TDisplay* display) { // [2.004] [0.100]
+    bin2bcd(value, display->digits);
     display->points = DISPLAY_FIRST_DOT;
 }
 
-void Format::volts(uint16_t millivolts, TDisplay* display) { // [10.00] [0.054]
+void Format::fixedPointWithLeadingBlank(uint16_t value, TDisplay* display) { // [10.00] [ 0.54]
     display->points = DISPLAY_SECOND_DOT;
-    bin2bcd((millivolts + 5) / 10, display->digits);
-    if(millivolts < 10000) {
+    bin2bcd((value + 5) / 10, display->digits);
+    if(value < 10000) {
         display->digits[0] = DSPLAY_BLANK_CHAR;
     }
 }
