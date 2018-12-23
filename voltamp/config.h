@@ -10,6 +10,7 @@
 #define RECTIFIER_PIN 2
 #define FAN_PIN 3
 #define BUTTON_ALT_PIN 5
+#define BUTTON_SECOND_PIN 6
 #define TEMP_PIN OWI_PIN_4
 
 #define RECTIFIER_UP_VOLTAGE 7500

@@ -38,6 +38,10 @@ static inline bool isAltButtonPressed() {
     return GET_PORT_BIT(PIND, BUTTON_ALT_PIN);
 }
 
+static inline bool isSecondButtonPressed() {
+    return GET_PORT_BIT(PIND, BUTTON_SECOND_PIN);
+}
+
 void updateRectifierVoltage(uint16_t millivolts) {
     if (millivolts > RECTIFIER_UP_VOLTAGE) {
         SET_PORT_BIT(PORTD, RECTIFIER_PIN);
