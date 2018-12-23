@@ -11,8 +11,10 @@
 #include "temp.h"
 #include "utils.h"
 #include "config.h"
+#include "powerCounter.h"
 
 int16_t q4Temperature = 0; ///< fixed point value with 4 bit exponent
+PowerCounter powerCounter;
 
 void updateMainDisplay(uint16_t millivolts, uint16_t milliamperes) {
     TDisplay voltsDisplay;
@@ -32,6 +34,16 @@ void updateAltDisplay(int16_t degrees, uint16_t milliwatts) {
     Format::floatingPoint4Didgits(milliwatts, &wattsDisplay);
 
     display.sendToDisplay(&degreesDisplay, &wattsDisplay);
+}
+
+void updateWattsDisplay(int16_t mAh, uint16_t mWh) {
+    TDisplay mAhDisplay;
+    Format::floatingPoint4Didgits(mAh, &mAhDisplay);
+    
+    TDisplay mWhDisplay;
+    Format::floatingPoint4Didgits(mWh, &mWhDisplay);
+
+    display.sendToDisplay(&mAhDisplay, &mWhDisplay);
 }
 
 static inline bool isAltButtonPressed() {
@@ -70,18 +82,33 @@ void processVoltageMeasurement() {
         millivolts += 20; // volts offset
     }
 
+    uint16_t milliwatts = (uint32_t)millivolts * (uint32_t)milliamperes / 1000;
 
     updateRectifierVoltage(millivolts);
     
+    powerCounter.appendMeasureEvery100ms(milliamperes, milliwatts);
+    
     int16_t degrees = (q4Temperature * 10) >> 4;
 
-    if(isAltButtonPressed()){
-        uint16_t milliwatts = (uint32_t)millivolts * (uint32_t)milliamperes / 1000;
-        updateAltDisplay(degrees, milliwatts);
+    if(isAltButtonPressed()) {
+        if(isSecondButtonPressed() ) {
+            powerCounter.reset();
+        } else {
+            // show temp & power
+            updateAltDisplay(degrees, milliwatts);
+        }
     } else {
-        updateMainDisplay(millivolts, milliamperes);
+        if(isSecondButtonPressed() ){
+            // show power count
+            uint32_t mAh = powerCounter.getMilliAmperePerHour();
+            uint32_t mWh = powerCounter.getMilliWattsPerHour();
+            updateWattsDisplay(mAh, mWh);
+        } else {
+            // show voltage
+            updateMainDisplay(millivolts, milliamperes);
+        }
     }
-
+    
     uart.updateData(millivolts, milliamperes, degrees);
 }
 
@@ -119,6 +146,7 @@ void initAll() {
     display.initialize();
     timer.initialize();
     temperatureSensor.initialize();
+    powerCounter.reset();
 
     sei();
 }
